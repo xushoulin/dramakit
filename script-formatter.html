@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>剧本结构化转换器 — AI 短剧分镜 JSON 生成 | DramaKit Script Formatter</title>
+<meta name="description" content="把小说、大纲或传统剧本转成 AI 视频模型可执行的结构化 JSON：人物圣经、场景表、分镜表、钩子标注。支持中英文剧本，浏览器本地处理。">
+<link rel="canonical" href="https://aidrama.shoulin.shop/script-formatter.html">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav><div class="container nav-inner">
+  <a class="brand" href="index.html">Drama<span>Kit</span></a>
+  <div class="nav-links">
+    <a href="index.html" data-i18n="nav.home">首页</a>
+    <a href="prompt-builder.html" data-i18n="nav.prompt">Prompt 构建器</a>
+    <a href="index.html#guides" data-i18n="nav.blog">教程</a>
+    <a href="privacy.html" data-i18n="nav.privacy">隐私政策</a>
+    <button id="langToggle">English</button>
+  </div>
+</div></nav>
+
+<div class="container tool-head">
+  <h1>📜 剧本结构化转换器</h1>
+  <p>把小说、大纲或传统剧本 → 结构化分镜 JSON（人物圣经 / 场景表 / 分镜表）。支持中文与英文剧本格式。全程本地处理。</p>
+</div>
+
+<div class="container">
+  <div class="panel">
+    <label data-i18n="f.input.label">粘贴剧本 / 小说 / 大纲</label>
+    <textarea id="input" class="mono" rows="12" placeholder="第一集 开场钩子&#10;【内景 写字楼电梯 — 日】&#10;旁白：……&#10;林晚：（攥紧工牌）……&#10;陈总：……&#10;&#10;或英文格式：&#10;Episode 1&#10;INT. ELEVATOR - DAY&#10;LIN WAN: ..."></textarea>
+    <div class="hint" data-i18n="f.input.hint">识别规则：第X集/Episode → 分集；内景/外景/INT./EXT. → 场景头；"角色名：台词" 或 "CHARACTER: line" → 对白。无标记时按空行分段处理。</div>
+
+    <div class="row">
+      <div><label data-i18n="f.opt.title">剧名 Title</label><input type="text" id="optTitle" placeholder="我的第一部 AI 短剧"></div>
+      <div><label data-i18n="f.opt.genre">题材 Genre</label><input type="text" id="optGenre" placeholder="都市 / 复仇 / 战神"></div>
+      <div><label data-i18n="f.opt.style">视觉风格 Visual style</label><input type="text" id="optStyle" placeholder="写实电影感，35mm 胶片质感"></div>
+      <div><label data-i18n="f.opt.hook">开场钩子 Opening hook</label><input type="text" id="optHook" placeholder="开场 3 秒反转"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="run" data-i18n="f.parse">解析并生成 JSON</button>
+      <button class="btn btn-ghost btn-sm" id="sample" data-i18n="f.sample">载入示例</button>
+    </div>
+  </div>
+
+  <div id="result" style="display:none;">
+    <div id="stats" class="stats"></div>
+    <div class="panel">
+      <div class="tabs">
+        <button class="tab-btn active" id="tab-json" data-i18n="f.tab.json">JSON 输出</button>
+        <button class="tab-btn" id="tab-table" data-i18n="f.tab.table">场次总览</button>
+      </div>
+      <div id="pane-json"><pre class="output" id="jsonOut"></pre></div>
+      <div id="pane-table" style="display:none;"><div id="tableOut"></div></div>
+      <div class="actions">
+        <button class="btn btn-primary btn-sm" id="copy" data-i18n="f.copy">复制 JSON</button>
+        <button class="btn btn-ghost btn-sm" id="download" data-i18n="f.download">下载 .json</button>
+      </div>
+      <div class="tip"><b data-i18n="f.tip.t">下一步：</b> <span data-i18n="f.tip.d">把每个镜头的 videoPrompt 复制到即梦 / 可灵 / Sora，或用 Prompt 构建器进一步定制镜头语言与角色一致性锁定。</span></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <p data-i18n="footer.copyright">© 2026 DramaKit. 所有处理均在浏览器本地完成。</p>
+    <p><a href="index.html" data-i18n="nav.home">首页</a> · <a href="privacy.html" data-i18n="nav.privacy">隐私政策</a></p>
+  </div>
+</footer>
+<script src="js/i18n.js"></script>
+<script src="js/formatter.js"></script>
+</body>
+</html>
