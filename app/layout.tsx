@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { LangProvider } from "@/components/Lang";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, GSC_TOKEN, ADSENSE_ID } from "@/lib/site";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
     locale: "zh_CN",
     alternateLocale: "en_US",
   },
+  ...(GSC_TOKEN ? { verification: { google: GSC_TOKEN } } : {}),
 };
 
 export const viewport: Viewport = {
@@ -39,6 +41,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script dangerouslySetInnerHTML={{ __html: antiFlashScript }} />
       </head>
       <body>
+        {ADSENSE_ID && (
+          <Script
+            id="adsense-script"
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
+        )}
         <LangProvider>
           <Nav />
           {children}

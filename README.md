@@ -43,11 +43,27 @@ npm run build  # 生产构建
 
 ## 部署（Vercel）
 
-已接 GitHub 自动部署：push 到 `main` 即触发。框架预设 Next.js，无需额外配置。
-线上地址：https://dramakit-five.vercel.app （后续可绑自有域名，改 `lib/site.ts` 即可）。
+已接 GitHub 自动部署：push 到 `main` 即触发。框架预设 Next.js（仓库内 `vercel.json` 已强制声明）。
+线上地址：https://aidrama.shoulin.shop （自有域名，待 Spaceship DNS 生效）。
 
-## TODO
+## 域名 / 第三方集成配置
 
-1. GSC 提交 + sitemap
-2. AdSense：审核通过后加代码位 + `public/ads.txt`
-3. 可选：FAQ JSON-LD、Google Analytics、绑定 aidrama.shoulin.shop
+全部通过构建时环境变量控制（`lib/site.ts`），**无需改代码**，改完在 Vercel 重新部署即生效：
+
+| 环境变量 | 作用 | 默认 |
+|---|---|---|
+| `NEXT_PUBLIC_SITE_URL` | canonical / sitemap / robots / JSON-LD 的域名 | `https://aidrama.shoulin.shop` |
+| `NEXT_PUBLIC_GSC_TOKEN` | Google 站点验证 meta 标签；留空则不输出 | 空 |
+| `NEXT_PUBLIC_ADSENSE_ID` | AdSense 发布商 ID（如 `ca-pub-xxx`），驱动广告脚本 + `/ads.txt`；留空则不注入 | 空 |
+
+在 Vercel 项目 → Settings → Environment Variables 添加，然后 Redeploy。
+
+## 上线收尾清单
+
+- [x] FAQPage / WebSite / SoftwareApplication JSON-LD（首页服务端直出）
+- [x] 自有域名 `aidrama.shoulin.shop` 作为默认 canonical（待 DNS 生效）
+- [x] GSC 验证 meta 挂载点（填 `NEXT_PUBLIC_GSC_TOKEN` 生效；也可改用 DNS TXT 验证，不动代码）
+- [x] AdSense 脚本 + `/ads.txt` 挂载点（填 `NEXT_PUBLIC_ADSENSE_ID` 生效）
+- [ ] Spaceship 加 CNAME `aidrama → cname.vercel-dns.com`，Vercel → Domains 绑定 `aidrama.shoulin.shop`
+- [ ] GSC 添加资源（域名前缀）并提交 `/sitemap.xml`
+- [ ] AdSense 审核通过后填发布商 ID 环境变量并重新部署
