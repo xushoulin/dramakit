@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://aidrama.shoulin.shop/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://aidrama.shoulin.shop/script-formatter.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://aidrama.shoulin.shop/prompt-builder.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://aidrama.shoulin.shop/blog/ai-short-drama-workflow.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://aidrama.shoulin.shop/blog/script-engineering.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://aidrama.shoulin.shop/blog/prompt-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://aidrama.shoulin.shop/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://dramakit-five.vercel.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://dramakit-five.vercel.app/script-formatter.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://dramakit-five.vercel.app/prompt-builder.html</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://dramakit-five.vercel.app/blog/ai-short-drama-workflow.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://dramakit-five.vercel.app/blog/script-engineering.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://dramakit-five.vercel.app/blog/prompt-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://dramakit-five.vercel.app/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
 </urlset>
