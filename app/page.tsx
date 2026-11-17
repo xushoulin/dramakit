@@ -104,46 +104,76 @@ const articles = [
 
 const faqs = [
   {
-    q: <T zh="这个工具免费吗？" en="Is this free?" />,
-    a: (
-      <T
-        zh="是，全部免费。所有处理均在浏览器本地完成，剧本不会上传到任何服务器。"
-        en="Yes, completely free. Everything runs locally in your browser; scripts are never uploaded to any server."
-      />
-    ),
+    qZh: "这个工具免费吗？",
+    qEn: "Is this free?",
+    aZh: "是，全部免费。所有处理均在浏览器本地完成，剧本不会上传到任何服务器。",
+    aEn: "Yes, completely free. Everything runs locally in your browser; scripts are never uploaded to any server.",
   },
   {
-    q: <T zh="生成的 JSON 能直接喂给视频模型吗？" en="Can I feed the JSON directly to a video model?" />,
-    a: (
-      <T
-        zh="JSON 是给\u201c人 + AI 工作流\u201d用的中间格式：每一场戏、每个镜头都有可直接复制进即梦 / 可灵 / Sora 的 videoPrompt 字段，配合 Prompt 构建器可进一步定制。"
-        en="The JSON is an intermediate format for your human + AI workflow: every scene and shot carries a videoPrompt field you can paste straight into Jimeng / Kling / Sora, and refine with the Prompt Builder."
-      />
-    ),
+    qZh: "生成的 JSON 能直接喂给视频模型吗？",
+    qEn: "Can I feed the JSON directly to a video model?",
+    aZh: "JSON 是给“人 + AI 工作流”用的中间格式：每一场戏、每个镜头都有可直接复制进即梦 / 可灵 / Sora 的 videoPrompt 字段，配合 Prompt 构建器可进一步定制。",
+    aEn: "The JSON is an intermediate format for your human + AI workflow: every scene and shot carries a videoPrompt field you can paste straight into Jimeng / Kling / Sora, and refine with the Prompt Builder.",
   },
   {
-    q: <T zh="支持英文剧本吗？" en="Do you support English scripts?" />,
-    a: (
-      <T
-        zh="支持。转换器同时识别中文（第X集 / 内景 / 角色：台词）和英文（Episode / INT. / CHARACTER: line）格式。"
-        en="Yes. The formatter recognizes both Chinese (第X集 / 内景 / 角色：台词) and English (Episode / INT. / CHARACTER: line) conventions."
-      />
-    ),
+    qZh: "支持英文剧本吗？",
+    qEn: "Do you support English scripts?",
+    aZh: "支持。转换器同时识别中文（第X集 / 内景 / 角色：台词）和英文（Episode / INT. / CHARACTER: line）格式。",
+    aEn: "Yes. The formatter recognizes both Chinese (第X集 / 内景 / 角色：台词) and English (Episode / INT. / CHARACTER: line) conventions.",
   },
   {
-    q: <T zh="AI 短剧出海怎么做？" en="How do I take an AI drama overseas?" />,
-    a: (
-      <T
-        zh="先看教程第三篇的 Prompt 指南；出海译制建议在结构化 JSON 的基础上逐镜翻译提示词，保持角色视觉标签不变。"
-        en="Start with guide #3. For localization, translate prompts shot by shot from the structured JSON while keeping visual character tags unchanged."
-      />
-    ),
+    qZh: "AI 短剧出海怎么做？",
+    qEn: "How do I take an AI drama overseas?",
+    aZh: "先看教程第三篇的 Prompt 指南；出海译制建议在结构化 JSON 的基础上逐镜翻译提示词，保持角色视觉标签不变。",
+    aEn: "Start with guide #3. For localization, translate prompts shot by shot from the structured JSON while keeping visual character tags unchanged.",
   },
 ];
+
+// Server-rendered JSON-LD for rich results (crawlers don't execute JS).
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": SITE_URL + "/#website",
+      url: SITE_URL,
+      name: "DramaKit",
+      description: "Free AI short drama tools: script formatter and video prompt builder.",
+      inLanguage: ["zh-CN", "en"],
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": SITE_URL + "/#app",
+      name: "DramaKit",
+      applicationCategory: "MultimediaApplication",
+      operatingSystem: "Web browser",
+      url: SITE_URL,
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+      featureList: [
+        "AI script to storyboard JSON",
+        "Character bible and scene table generation",
+        "Video prompt builder for Seedance, Kling, Hailuo, Sora, Runway, Veo",
+      ],
+    },
+    {
+      "@type": "FAQPage",
+      "@id": SITE_URL + "/#faq",
+      mainEntity: faqs.map((f) => ({
+        "@type": "Question",
+        name: f.qZh,
+        acceptedAnswer: { "@type": "Answer", text: f.aZh },
+      })),
+    },
+  ],
+};
 
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
+      />
       <header className="hero">
         <div className="container">
           <span className="badge">
@@ -228,8 +258,8 @@ export default function Home() {
           <p className="sec-sub">&nbsp;</p>
           {faqs.map((f, i) => (
             <details key={i}>
-              <summary>{f.q}</summary>
-              <p>{f.a}</p>
+              <summary><T zh={f.qZh} en={f.qEn} /></summary>
+              <p><T zh={f.aZh} en={f.aEn} /></p>
             </details>
           ))}
         </div>
