@@ -1,0 +1,151 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { SITE_URL } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "剧本工程化：把故事变成可执行的分镜 JSON",
+  description:
+    "为什么 AI 短剧需要 JSON 剧本？人物圣经、场景圣经、分镜表的结构与字段详解，附完整 schema 示例与 5 分钟实操方法。",
+  alternates: { canonical: `${SITE_URL}/blog/script-engineering` },
+};
+
+const schemaSample = `{
+  "characters": [
+    { "id": "c1", "name": "林晚",
+      "visualTags": "25岁女性，黑色长发，白衬衫，工牌挂脖",
+      "personality": "冷静、执拗" }
+  ],
+  "scenes": [
+    {
+      "id": "s1", "episode": 1,
+      "location": "写字楼电梯", "intExt": "INT", "time": "day",
+      "characters": ["林晚"],
+      "dialogue": [{ "character": "林晚", "line": "……" }],
+      "shots": [
+        { "shotId": "s1-1", "type": "medium",
+          "durationSec": 4,
+          "videoPrompt": "中景，写实电影感……保持角色面部与服装一致。" }
+      ]
+    }
+  ]
+}`;
+
+const schemaSampleEn = `{
+  "characters": [
+    { "id": "c1", "name": "Lin Wan",
+      "visualTags": "25yo woman, long black hair, white shirt, ID badge",
+      "personality": "calm, relentless" }
+  ],
+  "scenes": [
+    {
+      "id": "s1", "episode": 1,
+      "location": "office elevator", "intExt": "INT", "time": "day",
+      "characters": ["Lin Wan"],
+      "dialogue": [{ "character": "Lin Wan", "line": "..." }],
+      "shots": [
+        { "shotId": "s1-1", "type": "medium",
+          "durationSec": 4,
+          "videoPrompt": "Medium shot, cinematic realism... keep character consistent." }
+      ]
+    }
+  ]
+}`;
+
+export default function ScriptEngineeringArticle() {
+  return (
+    <div className="container prose">
+      <p className="breadcrumb"><Link href="/">DramaKit</Link> / Guides</p>
+
+      <div className="lang-zh">
+        <h1>剧本工程化：把故事变成可执行的分镜 JSON</h1>
+        <p className="meta">更新于 2026-11 · 阅读约 5 分钟</p>
+        <p>
+          很多新手把小说直接粘进视频模型，抽了 20 次卡还是得不到想要的画面。原因很简单：
+          <strong>视频模型需要的是“镜头指令”，不是“故事”</strong>。剧本工程化就是把故事翻译成机器指令的过程。
+        </p>
+
+        <h2>一份工程化剧本包含什么</h2>
+        <ul>
+          <li><strong>项目总纲</strong>：世界观、视觉风格方向、调性关键词</li>
+          <li><strong>人物圣经</strong>：每个角色的可视化标签（年龄、发型发色、服装、标志性道具）与性格关键词——这是跨镜头一致性的锚点</li>
+          <li><strong>场景圣经</strong>：空间结构、光线基调、氛围关键词</li>
+          <li><strong>分镜表</strong>：每场戏拆成镜头，含景别、运镜、时长、爆点标注和可直接投喂的 videoPrompt</li>
+        </ul>
+
+        <h2>Schema 长什么样</h2>
+        <p>这是 DramaKit 转换器输出的核心结构（节选）：</p>
+        <pre className="output">{schemaSample}</pre>
+        <p>
+          有了这个结构：写提示词时直接引用 visualTags 保持一致；配音按 dialogue 逐条生成；
+          剪辑按 shots 里的 durationSec 排时间线。整个下游都被这一个 JSON 驱动。
+        </p>
+
+        <h2>5 分钟实操</h2>
+        <ol>
+          <li>打开 <Link href="/script-formatter">剧本结构化转换器</Link>，点“载入示例”看格式，或直接粘贴你的剧本</li>
+          <li>识别规则：<code>第X集 / Episode</code> 分集、<code>内景 / INT.</code> 场景头、<code>角色名：台词</code> 对白——都是最常见的写作习惯，不需要改格式</li>
+          <li>填入剧名、题材、视觉风格（会成为每个镜头 videoPrompt 的一部分）</li>
+          <li>解析后复制 JSON 下载存档；把每场戏的 shots 逐个喂给视频模型</li>
+          <li>对镜头语言有要求时，用 <Link href="/prompt-builder">Prompt 构建器</Link>重写单个镜头</li>
+        </ol>
+
+        <h2>常见坑</h2>
+        <ul>
+          <li><strong>人物标签太抽象</strong>：“好看的女生”没用，要“25 岁、黑色长发、白衬衫”这种可画出来的描述</li>
+          <li><strong>一个镜头塞两件事</strong>：视频模型 3-8 秒只能演一个动作，拆开</li>
+          <li><strong>时长估算失真</strong>：中文台词按每秒 4 字估，英文按每秒 2.5 词估，转换器已内置</li>
+        </ul>
+        <p>
+          一句话总结：<strong>AI 短剧的生产力差距，就是剧本工程化的差距。</strong>
+          现在就去 <Link href="/script-formatter">结构化你的第一份剧本</Link>。
+        </p>
+      </div>
+
+      <div className="lang-en">
+        <h1>Script Engineering: Story to Executable Storyboard JSON</h1>
+        <p className="meta">Updated Nov 2026 · ~5 min read</p>
+        <p>
+          Beginners paste a novel straight into a video model and burn 20 generations without getting
+          the shot they imagined. The reason is simple: <strong>video models need shot instructions,
+          not stories</strong>. Script engineering is the act of translating story into machine instructions.
+        </p>
+
+        <h2>What an engineered script contains</h2>
+        <ul>
+          <li><strong>Project bible</strong>: worldview, visual direction, tone keywords</li>
+          <li><strong>Character bible</strong>: visual tags per character (age, hair, outfit, signature prop) plus personality — the anchor for cross-shot consistency</li>
+          <li><strong>Scene bible</strong>: spatial structure, lighting base, mood keywords</li>
+          <li><strong>Shot list</strong>: each scene decomposed into shots with framing, camera move, duration, hook markers and a paste-ready videoPrompt</li>
+        </ul>
+
+        <h2>What the schema looks like</h2>
+        <p>Core structure produced by the DramaKit formatter (excerpt):</p>
+        <pre className="output">{schemaSampleEn}</pre>
+        <p>
+          Once you have this structure: prompts reference visualTags for consistency; dubbing is
+          generated per dialogue line; editing follows durationSec. One JSON drives the entire downstream.
+        </p>
+
+        <h2>Five-minute walkthrough</h2>
+        <ol>
+          <li>Open the <Link href="/script-formatter">Script Formatter</Link>, click &ldquo;Load sample&rdquo; to see the format, or paste your own script</li>
+          <li>The parser reads common conventions — <code>Episode / 第X集</code> splits, <code>INT. / 内景</code> headers, <code>CHARACTER: line</code> dialogue — no reformatting needed</li>
+          <li>Fill in title, genre, visual style (these become part of every videoPrompt)</li>
+          <li>Parse, copy and archive the JSON; feed shots to your video model one by one</li>
+          <li>For finer camera control, rewrite individual shots in the <Link href="/prompt-builder">Prompt Builder</Link></li>
+        </ol>
+
+        <h2>Common pitfalls</h2>
+        <ul>
+          <li><strong>Abstract character tags</strong>: &ldquo;a pretty girl&rdquo; is useless; &ldquo;25yo, long black hair, white shirt&rdquo; is paintable</li>
+          <li><strong>Two actions in one shot</strong>: a 3&ndash;8s clip performs one action — split it</li>
+          <li><strong>Bad duration estimates</strong>: ~4 Chinese characters or ~2.5 English words per second; the formatter applies this automatically</li>
+        </ul>
+        <p>
+          Bottom line: <strong>the productivity gap in AI drama is the script-engineering gap.</strong>{" "}
+          Go <Link href="/script-formatter">structure your first script</Link>.
+        </p>
+      </div>
+    </div>
+  );
+}

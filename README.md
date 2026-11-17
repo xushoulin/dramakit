@@ -1,36 +1,53 @@
 # DramaKit — AI 短剧免费工具箱
 
-双语（中/EN）静态工具站，纯前端零依赖，定位 AI 短剧生产链路的"上游缝隙"：剧本工程化 + 视频 Prompt 构建。
+双语（中/EN）工具站，**Next.js 15 + React 19 + TypeScript（App Router）**，定位 AI 短剧生产链路的"上游缝隙"：剧本工程化 + 视频 Prompt 构建。
 
-## 页面结构
+## 路由结构
 
-| 页面 | 说明 |
+| 路由 | 说明 |
 |---|---|
-| `index.html` | 首页：工具卡片 + 教程 + FAQ（FAQ JSON-LD 可后续加） |
-| `script-formatter.html` | 剧本结构化转换器：文本 → 分镜 JSON（人物圣经/场景表/分镜表/videoPrompt） |
-| `prompt-builder.html` | 视频 Prompt 构建器：Seedance/可灵/海螺/Sora/Runway/Veo 六平台专用提示词 |
-| `blog/*.html` | 3 篇双语 SEO 文章（制作流程 / 剧本工程化 / Prompt 指南） |
-| `privacy.html` | 隐私政策（AdSense 审核项） |
+| `/` | 首页：工具卡片 + 教程 + FAQ |
+| `/script-formatter` | 剧本结构化转换器：文本 → 分镜 JSON（人物圣经/场景表/分镜表/videoPrompt） |
+| `/prompt-builder` | 视频 Prompt 构建器：Seedance/可灵/海螺/Sora/Runway/Veo 六平台专用提示词 |
+| `/blog/*` | 3 篇双语 SEO 文章（制作流程 / 剧本工程化 / Prompt 指南） |
+| `/privacy` | 隐私政策（AdSense 审核项） |
+| `/api/parse` | **POST** 剧本解析接口（前端工具调用） |
+| `/api/health` | **GET** 健康检查 |
+| `/robots.txt` `/sitemap.xml` | 由 `app/robots.ts` / `app/sitemap.ts` 动态生成 |
 
-## 特性
+## 后端接口演进路径
 
-- 全部浏览器本地处理，无后端、无 API Key、零成本（Vercel 静态托管）
-- i18n：`js/i18n.js` 中英切换，localStorage 记忆，`data-i18n` 词条 + `.lang-zh/.lang-en` 内容块
-- 解析器识别中文（第X集/内景/角色：台词）与英文（Episode/INT./CHARACTER: line）格式
-- 示例一键载入，JSON 可复制/下载
+解析器是 isomorphic 纯函数（`lib/parser.ts`），当前由 `/api/parse` 服务端执行。
+后续接 LLM 时只需改 `app/api/parse/route.ts` 内部实现（如换成百炼/OpenAI 管道），
+接口契约不变、前端零改动：
+
+```
+POST /api/parse
+Body: { "text": "剧本原文", "options": { "title", "genre", "style", "hook" } }
+Res:  Drama JSON（characters / scenes / shots[].videoPrompt / hooks / stats）
+```
+
+## i18n 方案
+
+- 可见内容双份 SSR（`components/Lang.tsx` 的 `<T zh en/>`），CSS `.lang-zh/.lang-en` 切换 → 爬虫无 JS 也能抓全内容
+- 动态文案/提示走 `useLang().L(zh, en)`
+- 语言偏好存 localStorage，`layout.tsx` 内联脚本防闪烁
+
+## 本地开发
+
+```bash
+npm install
+npm run dev    # http://localhost:3000
+npm run build  # 生产构建
+```
 
 ## 部署（Vercel）
 
-```bash
-cd aidrama-tools
-vercel --prod
-```
+已接 GitHub 自动部署：push 到 `main` 即触发。框架预设 Next.js，无需额外配置。
+线上地址：https://dramakit-five.vercel.app （后续可绑自有域名，改 `lib/site.ts` 即可）。
 
-或直接把 `aidrama-tools` 文件夹拖进 Vercel 控制台（框架选 Other）。
+## TODO
 
-## 上线前 TODO
-
-1. 把 `robots.txt`、`sitemap.xml`、各页 `canonical` 里的 `https://aidrama.shoulin.shop` 换成实际绑定域名
-2. Spaceship 加 DNS（A 记录 `76.76.21.21` 或 CNAME `cname.vercel-dns.com`）
-3. Vercel 绑定域名后提交 GSC、接入 AdSense（`ads.txt` 放站点根目录）
-4. 后续可加：FAQ JSON-LD 结构化数据、AdSense 代码位、Google Analytics
+1. GSC 提交 + sitemap
+2. AdSense：审核通过后加代码位 + `public/ads.txt`
+3. 可选：FAQ JSON-LD、Google Analytics、绑定 aidrama.shoulin.shop

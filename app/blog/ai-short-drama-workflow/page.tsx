@@ -1,0 +1,175 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { SITE_URL } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "AI 短剧制作全流程：八步走通（2026 实操指南）",
+  description:
+    "从创意到成片：AI 短剧制作八步工作流，剧本工程化、人物/场景圣经、分镜、视频生成（Seedance/可灵/Sora）、配音、剪辑，附各环节工具选型建议。",
+  alternates: { canonical: `${SITE_URL}/blog/ai-short-drama-workflow` },
+};
+
+export default function WorkflowArticle() {
+  return (
+    <div className="container prose">
+      <p className="breadcrumb"><Link href="/">DramaKit</Link> / Guides</p>
+
+      <div className="lang-zh">
+        <h1>AI 短剧制作全流程：八步走通</h1>
+        <p className="meta">更新于 2026-11 · 阅读约 6 分钟</p>
+        <p>
+          2026 年第二季度，全国新上线的微短剧里 AI 生成作品占比已超过六成。一部过去需要编剧组两周的案头工作，
+          现在一个工作周就能交付。这篇指南把整条链路拆成八步，每步给出“做什么 + 用什么”。
+        </p>
+
+        <h2>第 1 步：选题与钩子设计</h2>
+        <p>
+          短剧生死在前 3 秒。先定题材（战神归来 / 复仇打脸 / 先婚后爱），再写“每集一个钩子、三集一个大反转”的爆点分布表。
+          让大模型做竞品分析和受众画像，人只负责立意。
+        </p>
+
+        <h2>第 2 步：剧本创作（注意：不是传统剧本）</h2>
+        <p>
+          传统剧本是给演员和导演看的；AI 短剧剧本必须面向机器生产。每一场戏都要有：场景 ID、出场角色、对白、镜头类型、预估时长。
+          可用的 LLM：DeepSeek（逻辑严谨）、豆包（中文语境）、Kimi（长上下文，约 12.8 万 token 可撑 20-30 集）。
+        </p>
+
+        <h2>第 3 步：剧本工程化</h2>
+        <p>
+          把剧本转成结构化格式：<strong>项目总纲 + 人物圣经（可视化标签）+ 场景圣经 + 分镜表</strong>。
+          这是决定成片一致性的关键一步——可以直接用我们的{" "}
+          <Link href="/script-formatter">剧本结构化转换器</Link>
+          ，粘贴文本即可生成含 videoPrompt 字段的分镜 JSON。原理见
+          <Link href="/blog/script-engineering">剧本工程化详解</Link>。
+        </p>
+
+        <h2>第 4 步：角色与场景资产设定</h2>
+        <p>
+          用图像模型（即梦、Midjourney、SD+ControlNet）生成角色定妆照和场景概念图。
+          这些参考图之后要喂给视频模型锁定一致性——脸一旦变了，观众三秒弃剧。
+        </p>
+
+        <h2>第 5 步：分镜与视频生成</h2>
+        <p>
+          主流引擎：Seedance 2.5（字节系，30 秒连续生成 + 多模态参考）、可灵 3.0（动作与物理真实感）、
+          海螺 H3（性价比量产）、Sora / Veo 3.1（海外项目）。写提示词建议用{" "}
+          <Link href="/prompt-builder">Prompt 构建器</Link>按平台分别生成。
+        </p>
+        <p>
+          <strong>关键省钱技巧：分镜分级。</strong>
+          远景过场用低分辨率抽卡，特写情绪镜头才上高配，渲染成本能降约 40%。
+        </p>
+
+        <h2>第 6 步：自动审片与重抽</h2>
+        <p>
+          抽卡可用率通常只有 30%，量产必须上自动审片（画面可用性、角色一致性、逻辑纠错），
+          像巨日禄这类 Agent 能把可用率拉到 90%。个人创作者也可以人工只审关键镜头。
+        </p>
+
+        <h2>第 7 步：配音与音效</h2>
+        <p>
+          中文首选讯飞智作（拟真度最高、支持方言），英文用 ElevenLabs。
+          Veo 3.1 和部分新模型支持原生音频输出，可以连台词一起生成。
+        </p>
+
+        <h2>第 8 步：剪辑与出海分发</h2>
+        <p>
+          剪映完成精剪、字幕、多平台导出。出海是增长最猛的口子：海外 AI 剧/漫剧市场规模同比暴涨 550%，
+          多语种译制（趣丸、腾讯云一站式方案）已能批量完成，人只打磨文化禁忌与本土化细节。
+        </p>
+
+        <h2>工具选型一句话总结</h2>
+        <ul>
+          <li>个人试水：小云雀（39 元/月）或免费 LLM + 结构化工作流</li>
+          <li>连载团队：火山剧创 / LibTV / 万镜一刻 等全流程平台</li>
+          <li>技术型团队：ComfyUI + FLUX + Wan2.2 本地部署，无水印</li>
+        </ul>
+        <p>
+          整个流程里，真正拉开差距的不是单镜画质，而是第 3 步的工程化程度。
+          从 <Link href="/script-formatter">结构化你的剧本</Link> 开始。
+        </p>
+      </div>
+
+      <div className="lang-en">
+        <h1>The AI Short Drama Production Workflow in 8 Steps</h1>
+        <p className="meta">Updated Nov 2026 · ~6 min read</p>
+        <p>
+          By Q2 2026, AI-generated titles made up over 60% of newly released microdramas in China.
+          Case work that once took a two-week writers&rsquo; room now ships in under a week. Here is the
+          full pipeline, broken into eight steps with tool picks for each.
+        </p>
+
+        <h2>Step 1: Concept &amp; hook design</h2>
+        <p>
+          Short drama lives or dies in the first 3 seconds. Pick a genre (billionaire revenge /
+          sweet-marriage / underdog rise), then plan a &ldquo;hook per episode, big reversal every three
+          episodes&rdquo; beat sheet. Use LLMs for competitor analysis and audience profiling; keep the theme human.
+        </p>
+
+        <h2>Step 2: Scriptwriting (not a traditional script)</h2>
+        <p>
+          Traditional scripts are written for actors and directors. AI-drama scripts must be written
+          for machines: every scene needs a scene ID, characters, dialogue, shot type and estimated
+          duration. Good LLMs: Claude or GPT for creative range, Kimi or Gemini for long context
+          (a 128k-token window covers roughly 20&ndash;30 episodes).
+        </p>
+
+        <h2>Step 3: Script engineering</h2>
+        <p>
+          Convert the script into a structured format: <strong>project bible + character bible (visual tags) +
+          scene bible + shot list</strong>. This step decides consistency more than anything else — run your text
+          through our <Link href="/script-formatter">Script Formatter</Link> to get storyboard JSON with
+          ready-to-paste videoPrompt fields. See <Link href="/blog/script-engineering">Script Engineering explained</Link>.
+        </p>
+
+        <h2>Step 4: Character &amp; scene assets</h2>
+        <p>
+          Generate character reference sheets and concept art (Midjourney, Jimeng, SD + ControlNet).
+          These references get fed into the video model to lock consistency — once faces drift, viewers bail in three seconds.
+        </p>
+
+        <h2>Step 5: Storyboarding &amp; video generation</h2>
+        <p>
+          Main engines: Seedance 2.5 (30s continuous clips + multimodal reference), Kling 3.0
+          (physics-aware motion), Hailuo H3 (cost-effective volume), Sora / Veo 3.1 for western-facing
+          projects. Generate per-platform prompts with our <Link href="/prompt-builder">Prompt Builder</Link>.
+        </p>
+        <p>
+          <strong>Cost trick: shot tiering.</strong> Render wide transitional shots at low resolution and
+          spend high settings only on close-ups and emotional beats — cuts render cost roughly 40%.
+        </p>
+
+        <h2>Step 6: Auto review &amp; re-rolls</h2>
+        <p>
+          Raw acceptance rates hover around 30%. Volume production requires automated review
+          (usability, character consistency, logic) — agent pipelines like Juirilu push acceptance
+          above 90%. Solo creators can manually review only key shots.
+        </p>
+
+        <h2>Step 7: Dubbing &amp; sound</h2>
+        <p>
+          ElevenLabs for English emotional range; Chinese productions favor Xunfei Zhizuo.
+          Veo 3.1 and several newer models support native audio generation, including dialogue.
+        </p>
+
+        <h2>Step 8: Editing &amp; international distribution</h2>
+        <p>
+          CapCut / Jianying for the final cut, captions and multi-platform export. Going overseas is
+          the fastest-growing lane: the international AI-drama market is up ~550% YoY, and one-stop
+          translation pipelines now handle bulk localization — humans focus on cultural taboos and local nuance.
+        </p>
+
+        <h2>One-line tool picks</h2>
+        <ul>
+          <li>Solo experiments: Xiaoyunque (~$6/mo) or free LLM + a structured workflow</li>
+          <li>Serialized teams: all-in-one platforms (Volcano Drama Engine, LibTV)</li>
+          <li>Technical teams: local ComfyUI + FLUX + Wan2.2, no watermarks</li>
+        </ul>
+        <p>
+          The real differentiator across this pipeline is not single-shot beauty — it&rsquo;s how much of
+          Step 3 you engineer. Start by <Link href="/script-formatter">structuring your script</Link>.
+        </p>
+      </div>
+    </div>
+  );
+}
