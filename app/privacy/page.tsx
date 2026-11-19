@@ -16,7 +16,7 @@ export default function PrivacyPage() {
 
       <div className="lang-zh">
         <h1>隐私政策</h1>
-        <p className="meta">更新于 2026-11-17</p>
+        <p className="meta">更新于 2026-11-19</p>
 
         <h2>我们如何处理你的数据</h2>
         <p>
@@ -41,12 +41,12 @@ export default function PrivacyPage() {
         <p>本站文章可能包含指向第三方网站的链接，我们对其隐私实践不承担责任。</p>
 
         <h2>联系</h2>
-        <p>如对本政策有疑问，请通过站内渠道联系我们。</p>
+        <p>如对本政策有疑问，请<a href="/contact">联系我们</a>。</p>
       </div>
 
       <div className="lang-en">
         <h1>Privacy Policy</h1>
-        <p className="meta">Updated 2026-11-17</p>
+        <p className="meta">Updated 2026-11-19</p>
 
         <h2>How we handle your data</h2>
         <p>
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
         <p>Articles on this site may link to third-party websites; we are not responsible for their privacy practices.</p>
 
         <h2>Contact</h2>
-        <p>Questions about this policy? Reach us through the site&rsquo;s contact channel.</p>
+        <p>Questions about this policy? <a href="/contact">Contact us</a>.</p>
       </div>
     </div>
   );

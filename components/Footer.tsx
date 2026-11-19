@@ -17,6 +17,7 @@ export function Footer() {
           <Link href="/script-formatter"><T zh="剧本结构化" en="Script Formatter" /></Link>
           <Link href="/prompt-builder"><T zh="Prompt 构建器" en="Prompt Builder" /></Link>
           <Link href="/privacy"><T zh="隐私政策" en="Privacy" /></Link>
+          <Link href="/contact"><T zh="联系我们" en="Contact" /></Link>
         </p>
         <p>
           <T
